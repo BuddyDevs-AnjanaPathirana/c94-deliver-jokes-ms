@@ -1,11 +1,10 @@
-// src/app.module.ts
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { JokesModule } from './jokes/jokes.module';
 import { JokeType } from './jokes/entities/joke-type.entity';
 import { Joke } from './jokes/entities/joke.entity';
+import * as fs from 'fs'; // Import fs to handle reading the SSL certificate
 
 @Module({
   imports: [
@@ -21,6 +20,9 @@ import { Joke } from './jokes/entities/joke.entity';
       database: process.env.DB_DATABASE,
       entities: [JokeType, Joke],
       synchronize: true, // **Note**: Set to false in production
+      ssl: {
+        rejectUnauthorized: true, // or false for testing, but not recommended for production
+      },
     }),
     JokesModule,
   ],
